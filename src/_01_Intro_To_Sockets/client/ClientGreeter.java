@@ -1,15 +1,24 @@
 package _01_Intro_To_Sockets.client;
 
 import java.net.*;
+
+import _02_Chat_Application.ChatApp;
+
 import java.io.*;
 
 public class ClientGreeter {
 	DataOutputStream output;
 	DataInputStream input;
-	String Input;
+	public String Input;
 	public Socket sock;
+	public String username;
+	
+public ClientGreeter(String user) {	
+	username = user;
+}
 public void start() {
-
+//#1 192.168.7.71
+	
 	 String ip = "192.168.7.71";
         int port =80;
        try{
@@ -21,8 +30,10 @@ public void start() {
         	 
          String in = input.readUTF();
          if(!in.equals("")) {
-        	Input = in;
+        
+        	ChatApp.addMessage(in,false);
         	System.out.println(in);
+        	
          }
          }
          sock.close();
@@ -33,7 +44,9 @@ public void start() {
 
 public void send(String text) {
 	try {
-		output.writeUTF(text);
+		output.writeUTF(username+": "+text);
+		ChatApp.addMessage(username+": "+text,true);
+		System.out.println("You: "+text);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
