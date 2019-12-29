@@ -11,7 +11,7 @@ public class ClientGreeter {
 	DataInputStream input;
 	public String Input;
 	public Socket sock;
-	public String username;
+	public static String username;
 	
 public ClientGreeter(String user) {	
 	username = user;
@@ -19,8 +19,9 @@ public ClientGreeter(String user) {
 public void start() {
 //#1 192.168.7.71
 	
-	 String ip = "192.168.7.71";
+	 String ip = "192.168.7.217";
         int port =80;
+        //80
        try{
     	 sock = new Socket(ip,port);
          output = new DataOutputStream(sock.getOutputStream());
@@ -38,14 +39,17 @@ public void start() {
          }
          sock.close();
     }catch(IOException e) {
-    	
+    	e.printStackTrace();
     }
    }
 
 public void send(String text) {
 	try {
+		//System.out.println(username);
 		output.writeUTF(username+": "+text);
+		
 		ChatApp.addMessage(username+": "+text,true);
+		
 		System.out.println("You: "+text);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block

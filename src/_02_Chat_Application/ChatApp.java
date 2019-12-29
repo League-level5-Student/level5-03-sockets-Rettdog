@@ -29,7 +29,7 @@ public class ChatApp implements ActionListener, KeyListener {
 	static JLabel textView;
 	static JTextField textInput;
 	static JButton sender;
-	ClientGreeter client;
+	static ClientGreeter client;
 	static ArrayList<String> messages = new ArrayList<String>();
 	static ArrayList<JLabel> labels = new ArrayList<JLabel>();
 	static ArrayList<Boolean> colors = new ArrayList<Boolean>();
@@ -41,7 +41,7 @@ public class ChatApp implements ActionListener, KeyListener {
 	
 	public void makeFrame() {
 		frame = new JFrame();
-		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel = new JPanel();
 		
 		panel.setPreferredSize(new Dimension(500,200));
@@ -76,17 +76,31 @@ public class ChatApp implements ActionListener, KeyListener {
 		
 			//String ip = JOptionPane.showInputDialog("Enter the IP Address");
 			//int port = Integer.parseInt(JOptionPane.showInputDialog("Enter the port number"));
-			client = new ClientGreeter(JOptionPane.showInputDialog("Username:"));
+		String name = JOptionPane.showInputDialog("Username:");
+		if(name.length()>15) {
+			name = name.substring(0,15);
+		}
+			client = new ClientGreeter(name);
 			client.start();
 		
 			while(client.sock.isConnected()) {
 				//work here
-				//I need to make the sysos of input go into the jframe
+				
 				
 			}
 			
 	}
 	public static void addMessage(String in, Boolean you) {
+		/*int lineLength = 70;
+		System.out.println(in.length()-client.username.length());
+		if(in.length()>lineLength) {
+			in = "<html>"+in.substring(0,lineLength)+"<br>"+in.substring(lineLength, in.length())+"</html>";
+		}*/
+		int length = in.length();
+		if(length-70>0) {
+			addMessage(in.substring(70,in.length()),you);
+			in = in.substring(0,70);
+		}
 		
 		messages.add(in);
 		colors.add(you);
